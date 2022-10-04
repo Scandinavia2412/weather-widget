@@ -14,9 +14,9 @@ class Model {
     }
 
     detailedWeatherChanged(id) {
-     const choosedWeather = this.detailedDaysList.find(item => item.id === +id)
-     this.current = choosedWeather;
-     this.commit(this.daysList, this.current, this.location)
+        const choosedWeather = this.detailedDaysList.find(item => item.id === +id)
+        this.current = choosedWeather;
+        this.commit(this.daysList, this.current, this.location)
     }
 
     commit(days, detailedDay, location) {
@@ -43,10 +43,10 @@ class View {
         this.icon.alt = "icon"
         this.description = this.createElement('p', 'detailed-day__description')
         this.mainContent = this.createElement('div', 'detailed-day__main-content')
-        this.elementsList = this.createElementsList() 
-        
+        this.elementsList = this.createElementsList()
+
         this.rightSide = this.appendElements('detailCard')
-        this.daysRow = this.appendElements('dayCard')  
+        this.daysRow = this.appendElements('dayCard')
         this.app.append(this.selectorsRow)
         this.selectorsRow.append(this.dayRange, this.daySearch)
         this.dayRange.append(this.addSelectorOptions(rangeDays))
@@ -55,50 +55,51 @@ class View {
     }
 
     bindEditDetailedDay(handler) {
-     this.daysRow.addEventListener('click', (e) => {
-        handler(e.target.parentNode.id || e.target.id);
-        
-     })
-    }  
+        this.daysRow.addEventListener('click', (e) => {
+            handler(e.target.parentNode.id || e.target.id);
+
+        })
+    }
 
     createElementsList() {
         let detailedCardElements = []
         let daysCardList = []
-        for(let i = 1; i < 7; i++ ) {
+        for (let i = 1; i < 7; i++) {
             this[`parametr${i}`] = this.createElement('p', 'detailed-day__card-content')
             this[`parametrDescription${i}`] = this.createElement('p', 'detailed-day__card-content')
-            this[`detailedCard${i}`] = this.createElement('div', 'detailed-day__card') 
-            detailedCardElements.push({parametr: this[`parametr${i}`] ,parametrDescription: this[`parametrDescription${i}`], detailedCard: this[`detailedCard${i}`]})
+            this[`detailedCard${i}`] = this.createElement('div', 'detailed-day__card')
+            detailedCardElements.push({ parametr: this[`parametr${i}`], parametrDescription: this[`parametrDescription${i}`], detailedCard: this[`detailedCard${i}`] })
         }
-        for(let i = 1; i < 8; i ++) {
+        for (let i = 1; i < 8; i++) {
             this[`nameOfDay${i}`] = this.createElement('div', 'main__day-name')
             this[`iconWrapper${i}`] = this.createElement('img', 'main__day-icon')
             this[`temp${i}`] = this.createElement('div', 'main__day-temperature')
-            this[`wrapper${i}`] = this.createElement('div', 'main__day')          
-            daysCardList.push({nameOfDay: this[`nameOfDay${i}`], iconWrapper: this[`iconWrapper${i}`], temp: this[`temp${i}`], wrapper: this[`wrapper${i}`]})
+            this[`wrapper${i}`] = this.createElement('div', 'main__day')
+            i === 1 ? this[`wrapper${i}`].classList.add('active') : null
+            daysCardList.push({ nameOfDay: this[`nameOfDay${i}`], iconWrapper: this[`iconWrapper${i}`], temp: this[`temp${i}`], wrapper: this[`wrapper${i}`] })
         }
         return { detailedCardElements, daysCardList }
     }
-   
+
     appendElements(type) {
         let { detailedCardElements, daysCardList } = this.elementsList;
         let container;
-        if(type === 'detailCard') {
+        if (type === 'detailCard') {
             container = this.createElement('div', 'detailed-day__right')
             detailedCardElements.map(item => {
-               let { parametr, parametrDescription, detailedCard } = item;
-               detailedCard.append(parametr, parametrDescription)
-               container.append(detailedCard)
+                let { parametr, parametrDescription, detailedCard } = item;
+                detailedCard.append(parametr, parametrDescription)
+                container.append(detailedCard)
             })
-             return container;
+            return container;
         } else {
-             container = this.createElement('div', 'main__days');
-             daysCardList.map(item => {
+            container = this.createElement('div', 'main__days');
+            daysCardList.map(item => {
                 let { nameOfDay, iconWrapper, temp, wrapper } = item;
-                wrapper.append(nameOfDay, iconWrapper,temp)
+                wrapper.append(nameOfDay, iconWrapper, temp)
                 container.append(wrapper)
-             })
-          return container;   
+            })
+            return container;
         }
     }
 
@@ -140,9 +141,9 @@ class View {
             let { humidity, temperatureF, temperature, wind, sunset, sunrise } = data
             contentList = [
                 { Humidity: `${humidity} %` },
-                { ['Temperature F']:` ${temperatureF} F`},
+                { ['Temperature F']: ` ${temperatureF} F` },
                 { ['Max temp']: `${temperature}${degreesCelcius}` },
-                { Wind: `${wind} mpH`},
+                { Wind: `${wind} mpH` },
                 { Sunset: sunset },
                 { Sunrise: sunrise }
             ]
@@ -160,49 +161,54 @@ class View {
         let degreesCelcius = String.fromCodePoint(8451);
         let { detailedCardElements, daysCardList } = this.elementsList;
         if (type === 'detailCard') {
-               for(let i = 0; i < contentList.length; i++) {
-                 let { parametr, parametrDescription } = detailedCardElements[i];
-                  parametr.textContent = Object.keys(contentList[i])
-                  parametrDescription.textContent = Object.values(contentList[i])
-               }
-        } else {   
-            for(let i = 0; i < daysCardList.length; i++) {
-                let { nameOfDay, iconWrapper, temp,  wrapper } = daysCardList[i];
-                let { id, dayName, icon, temperature} = contentList[i];
+            for (let i = 0; i < contentList.length; i++) {
+                let { parametr, parametrDescription } = detailedCardElements[i];
+                parametr.textContent = Object.keys(contentList[i])
+                parametrDescription.textContent = Object.values(contentList[i])
+            }
+        } else {
+            for (let i = 0; i < daysCardList.length; i++) {
+                let { nameOfDay, iconWrapper, temp, wrapper } = daysCardList[i];
+                let { id, dayName, icon, temperature } = contentList[i];
                 wrapper.id = id;
                 nameOfDay.textContent = dayName;
                 iconWrapper.src = `${icon}`;
                 iconWrapper.alt = 'icon';
                 temp.textContent = `+${temperature} ${degreesCelcius}`;
-              }
-        }  
-    } 
-
+            }
+        }
+    }
+    setActiveMode(current, elementsList) {
+        let activeElement = elementsList.find(item => item.wrapper.classList.contains('active'));
+        activeElement.wrapper.classList.remove('active');
+        let element = elementsList.find(item => +item.wrapper.id === current.id);
+        element.wrapper.classList.add('active')
+    }
     displayWeatherDays(days, current, location) {
         if (!days.length && !!current) {
             const message = this.createElement('p', 'main__message');
             message.textContent = 'No data available';
             this.app.append(message)
-        } else {   
+        } else {
             this.cityName.textContent = `${location}`
             this.date.textContent = `${current.dayName}  ${this.reverseDate(current.date)}`
             let degreesCelcius = String.fromCodePoint(8451);
             this.temperature.textContent = `+${Math.round(current.temperature)} ${degreesCelcius}`
             this.icon.src = `${current.icon}`
-            this.description.textContent = `${current.description}`          
+            this.description.textContent = `${current.description}`
             const detailCardContentList = this.createDataList(current, 'detailedCard')
-            this.setContext(detailCardContentList, 'detailCard')           
+            this.setContext(detailCardContentList, 'detailCard')
             const daysContentList = this.createDataList(days, 'dayCard')
-            this.setContext(daysContentList,'dayCard')
+            this.setContext(daysContentList, 'dayCard')
             this.mainContent.append(this.temperature, this.description)
             this.leftSide.append(this.icon, this.mainContent)
             this.rowContainer.append(this.leftSide, this.rightSide)
+            this.setActiveMode(current, this.elementsList.daysCardList)
             this.detailedWeather.append(this.cityName, this.date, this.rowContainer)
             this.app.append(this.daysRow)
         }
     }
 }
-
 class Controller {
     constructor(model, view) {
         this.model = model;
@@ -218,15 +224,13 @@ class Controller {
     }
 
     onWeatherChangedList = (days, current, location) => {
-        this.view.displayWeatherDays(days, current, location);        
+        this.view.displayWeatherDays(days, current, location);
     }
 
     handleDayClicked = id => {
         this.model.detailedWeatherChanged(id)
     }
 }
-
-
 class Weather {
     constructor(id, dayName, temperature, description, icon) {
         this.id = id
@@ -235,7 +239,7 @@ class Weather {
         this._description = description
         this._icon = icon
     }
-   
+
     get dayName() {
         return this._dayName;
     };
@@ -249,7 +253,6 @@ class Weather {
         return this._description;
     };
 }
-
 class WeatherDetailed extends Weather {
     constructor(id, dayName, temperature, description, icon, date, humidity, temperatureF, visibility, wind, sunrise, sunset) {
         super(id, dayName, temperature, description, icon);
@@ -259,9 +262,9 @@ class WeatherDetailed extends Weather {
         this._temperatureF = temperatureF;
         this._wind = wind;
         this._sunrise = sunrise;
-        this._sunset = sunset;        
-    }  
-  
+        this._sunset = sunset;
+    }
+
     get date() {
         return this._date;
     };

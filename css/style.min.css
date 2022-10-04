@@ -72,7 +72,7 @@
   font-size: 20px;
   text-align: left;
   margin-bottom: 30px;
-  padding-left: 30px;
+  padding-left: 35px;
 }
 .detailed-day__row {
   display: flex;
@@ -84,8 +84,8 @@
   align-items: start;
 }
 .detailed-day__icon {
-  width: 230px;
-  margin-left: 30px;
+  max-width: 230px;
+  margin-left: 40px;
   height: auto;
 }
 .detailed-day__main-content {
@@ -187,6 +187,10 @@ html {
 }
 .main__day:hover {
   transform: scale(1.1);
+}
+.main__day.active {
+  background-color: rgba(246, 244, 244, 0.5);
+  backdrop-filter: blur(5px);
 }
 .main__day-name {
   margin-bottom: 10px;
