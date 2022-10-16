@@ -1,33 +1,9 @@
-let rangeDays = ['1-3O Octember', '4-5 October'];
-let searchByDayName = ['today', 'hourly', 'daily'];
-
-class Model {
-    constructor(daysList, detailedDaysList, location) {
-        this.daysList = daysList
-        this.detailedDaysList = detailedDaysList
-        this.current = detailedDaysList[0]
-        this.location = location
-    }
-
-    bindWeatherListChanged(callback) {
-        this.onWeatherListChanged = callback;
-    }
-
-    detailedWeatherChanged(id) {
-        const choosedWeather = this.detailedDaysList.find(item => item.id === +id)
-        this.current = choosedWeather;
-        this.commit(this.daysList, this.current, this.location)
-    }
-
-    commit(days, detailedDay, location) {
-        this.onWeatherListChanged(days, detailedDay, location)
-    }
-}
-
 class View {
     constructor() {
         this.app = this.getElement('#root')
         this.app.classList.add('main')
+        this.themeWrapper = this.createElement('div', 'main__theme-wrapper', 'theme')
+        this.themeToggler= this.createElement('div', 'fas', 'fa-moon', 'theme-toggler')
         this.dayRange = this.createElement('div', 'main__selector', 'selector')
         this.dayRange.textContent = 'Days range'
         this.daySearch = this.createElement('div', 'main__selector', 'selector')
@@ -44,21 +20,75 @@ class View {
         this.description = this.createElement('p', 'detailed-day__description')
         this.mainContent = this.createElement('div', 'detailed-day__main-content')
         this.elementsList = this.createElementsList()
-
+        this.themeWrapper.append(this.themeToggler)
+        
         this.rightSide = this.appendElements('detailCard')
         this.daysRow = this.appendElements('dayCard')
-        this.app.append(this.selectorsRow)
         this.selectorsRow.append(this.dayRange, this.daySearch)
         this.dayRange.append(this.addSelectorOptions(rangeDays))
         this.daySearch.append(this.addSelectorOptions(searchByDayName))
-        this.app.append(this.detailedWeather, this.rightSide, this.daysRow)
+        this.app.append(this.themeWrapper,this.selectorsRow, this.detailedWeather, this.daysRow)
+        this.onSelectorClick()
+        this.handlerThemeToggler()
     }
 
     bindEditDetailedDay(handler) {
         this.daysRow.addEventListener('click', (e) => {
             handler(e.target.parentNode.id || e.target.id);
-
         })
+    }
+
+    bindSelectorClicked(handler) {
+      this.dayRange.addEventListener('click', () => {
+        handler(this.dayRangeValue, this.searchByDayNameValue)
+      })
+      this.daySearch.addEventListener('click', () => {
+        handler(this.dayRangeValue, this.searchByDayNameValue)
+      })
+    }
+
+    handlerThemeToggler() {
+        let url;    
+
+        let themeToggler = document.querySelector('#theme-toggler')
+        window.localStorage.setItem('imageUrl', 'https://wallpapercave.com/wp/wp7041961.jpg')
+        document.body.style.backgroundImage = `url(${'https://images.pexels.com/photos/427679/pexels-photo-427679.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'})`;
+        
+        themeToggler.onclick = () => {   
+            themeToggler.classList.toggle('fa-moon');
+            themeToggler.classList.toggle('fa-sun');
+            
+            if(themeToggler.classList.contains('fa-sun')) {
+                window.localStorage.setItem('imageUrl', 'https://wallpapercave.com/wp/wp7041961.jpg')
+                url = localStorage.getItem('imageUrl')               
+                document.body.classList.add('active');
+                document.body.style.backgroundImage = `url(${url})`
+            } else {
+                window.localStorage.setItem('imageUrl', 'https://images.pexels.com/photos/427679/pexels-photo-427679.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')
+                url = localStorage.getItem('imageUrl');
+                document.body.classList.remove('active');
+                document.body.style.backgroundImage = `url(${url})`
+            }
+        }
+    }
+
+    onSelectorClick() {
+        const selectors = document.querySelectorAll('.selector');        
+        [...selectors].map(item => { 
+            item.classList.add('active')        
+            item.addEventListener('click', (e) => {
+                item.classList.toggle('active');
+                if (e.target.classList.contains('selector__option')) {
+                    const optionContent = e.target.textContent;
+                    if (+optionContent[0]) {
+                        this.dayRangeValue = +optionContent[0];
+                    }
+                    else {
+                        this.searchByDayNameValue = optionContent;
+                    }
+                }
+            })
+        })      
     }
 
     createElementsList() {
@@ -81,7 +111,7 @@ class View {
         return { detailedCardElements, daysCardList }
     }
 
-    appendElements(type) {
+    appendElements(type, selectedDaysCount) {
         let { detailedCardElements, daysCardList } = this.elementsList;
         let container;
         if (type === 'detailCard') {
@@ -94,24 +124,28 @@ class View {
             return container;
         } else {
             container = this.createElement('div', 'main__days');
-            daysCardList.map(item => {
+            let selectedDays = daysCardList.slice(0, selectedDaysCount);
+            selectedDays.map(item => {
                 let { nameOfDay, iconWrapper, temp, wrapper } = item;
                 wrapper.append(nameOfDay, iconWrapper, temp)
                 container.append(wrapper)
-            })
+            })           
             return container;
         }
     }
 
-    createElement(tag, className, additionClassName) {
+    createElement(tag, className, additionClassName, id) {
         const element = document.createElement(tag);
+        if(id) {
+            element.id = id;
+        }
         if (className && !additionClassName) {
-            element.classList.add(className)
+            element.classList.add(className);
         }
         else if (className && additionClassName) {
-            element.classList.add(`${className}`, `${additionClassName}`)
+            element.classList.add(`${className}`, `${additionClassName}`);
         }
-        return element
+        return element;
     }
 
     getElement(selector) {
@@ -119,8 +153,7 @@ class View {
     }
 
     reverseDate(date) {
-        return date.split('-').reverse().join('/')
-        return date;
+        return date.split('-').reverse().join('/');
     }
 
     addSelectorOptions(contentList) {
@@ -132,7 +165,6 @@ class View {
         })
         return optionsList;
     }
-
 
     createDataList(data, typeOfList) {
         let contentList = [];
@@ -159,7 +191,7 @@ class View {
 
     setContext(contentList, type) {
         let degreesCelcius = String.fromCodePoint(8451);
-        let { detailedCardElements, daysCardList } = this.elementsList;
+        let { detailedCardElements, daysCardList } = this.elementsList;     
         if (type === 'detailCard') {
             for (let i = 0; i < contentList.length; i++) {
                 let { parametr, parametrDescription } = detailedCardElements[i];
@@ -167,7 +199,7 @@ class View {
                 parametrDescription.textContent = Object.values(contentList[i])
             }
         } else {
-            for (let i = 0; i < daysCardList.length; i++) {
+            for (let i = 0; i < contentList.length; i++) {
                 let { nameOfDay, iconWrapper, temp, wrapper } = daysCardList[i];
                 let { id, dayName, icon, temperature } = contentList[i];
                 wrapper.id = id;
@@ -178,18 +210,21 @@ class View {
             }
         }
     }
+
     setActiveMode(current, elementsList) {
         let activeElement = elementsList.find(item => item.wrapper.classList.contains('active'));
         activeElement.wrapper.classList.remove('active');
         let element = elementsList.find(item => +item.wrapper.id === current.id);
         element.wrapper.classList.add('active')
     }
+
     displayWeatherDays(days, current, location) {
+        this.selectedDaysCount = days.length;
         if (!days.length && !!current) {
             const message = this.createElement('p', 'main__message');
             message.textContent = 'No data available';
             this.app.append(message)
-        } else {
+        } else {            
             this.cityName.textContent = `${location}`
             this.date.textContent = `${current.dayName}  ${this.reverseDate(current.date)}`
             let degreesCelcius = String.fromCodePoint(8451);
@@ -205,158 +240,10 @@ class View {
             this.rowContainer.append(this.leftSide, this.rightSide)
             this.setActiveMode(current, this.elementsList.daysCardList)
             this.detailedWeather.append(this.cityName, this.date, this.rowContainer)
+            this.daysRow = this.appendElements('dayCard', days.length)
+            let app = document.querySelector('#root')
+            app.removeChild(app.lastChild)
             this.app.append(this.daysRow)
         }
     }
 }
-class Controller {
-    constructor(model, view) {
-        this.model = model;
-        this.view = view;
-
-        //Explicit this binding 
-        this.model.bindWeatherListChanged(this.onWeatherChangedList)
-
-        //Display initial weather info
-        this.onWeatherChangedList(this.model.daysList, this.model.current, this.model.location)
-
-        this.view.bindEditDetailedDay(this.handleDayClicked)
-    }
-
-    onWeatherChangedList = (days, current, location) => {
-        this.view.displayWeatherDays(days, current, location);
-    }
-
-    handleDayClicked = id => {
-        this.model.detailedWeatherChanged(id)
-    }
-}
-class Weather {
-    constructor(id, dayName, temperature, description, icon) {
-        this.id = id
-        this._dayName = dayName
-        this._temperature = temperature
-        this._description = description
-        this._icon = icon
-    }
-
-    get dayName() {
-        return this._dayName;
-    };
-    get temperature() {
-        return this._temperature;
-    };
-    get icon() {
-        return this._icon;
-    };
-    get description() {
-        return this._description;
-    };
-}
-class WeatherDetailed extends Weather {
-    constructor(id, dayName, temperature, description, icon, date, humidity, temperatureF, visibility, wind, sunrise, sunset) {
-        super(id, dayName, temperature, description, icon);
-        this._date = date;
-        this._humidity = humidity;
-        this._visibility - visibility;
-        this._temperatureF = temperatureF;
-        this._wind = wind;
-        this._sunrise = sunrise;
-        this._sunset = sunset;
-    }
-
-    get date() {
-        return this._date;
-    };
-    get visibility() {
-        return this._visibility;
-    };
-    get temperatureF() {
-        return this._temperatureF;
-    };
-    get humidity() {
-        return this._humidity;
-    };
-    get wind() {
-        return this._wind;
-    };
-    get sunrise() {
-        return this._sunrise;
-    };
-    get sunset() {
-        return this._sunset;
-    };
-}
-
-function getData() {
-    return fetch("https://api.weatherapi.com/v1/forecast.json?key=333b71fbcd1b4dc891853646220210&q=London&days=7&aqi=no&alerts=no")
-        .then(res => res.json())
-        .then(data => data)
-        .catch(err => console.log(`Error: ${err}`))
-}
-
-function createWeatherDays(allDays) {
-    let daysList = [];
-    let detailedDaysList = [];
-    let icon = '';
-    const result = allDays.map((day, index) => {
-        let {
-            date,
-            dayName,
-            day: {
-                condition: {
-                    text
-                },
-                avghumidity,
-                avgtemp_c,
-                avgtemp_f,
-                avgvis_km,
-                maxwind_kph
-            },
-            astro: {
-                sunrise,
-                sunset
-            }
-        } = day;
-
-        if (text === 'Partly cloudy') {
-            icon = 'images/icons/1.png'
-        } else if (text === 'Sunny') {
-            icon = 'images/icons/3.png'
-        } else {
-            icon = 'images/icons/2.png'
-        }
-
-        daysList.push(new Weather(index + 1, dayName, avgtemp_c, text, icon));
-        detailedDaysList.push(new WeatherDetailed(index + 1, dayName, avgtemp_c, text, icon, date, avghumidity, avgtemp_f, avgvis_km, maxwind_kph, sunrise, sunset))
-        return {
-            daysList,
-            detailedDaysList
-        }
-    })
-    return result;
-}
-
-function setData() {
-    let dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    let daysList, detailedDaysList;
-    getData()
-        .then(data => {
-            let {
-                location,
-                forecast: {
-                    forecastday
-                }
-            } = data;
-            for (let i = 0; i < forecastday.length; i++) {
-                forecastday[i].dayName = dayNames[i];
-                ({
-                    daysList,
-                    detailedDaysList
-                } = createWeatherDays(forecastday)[length]);
-            }
-            new Controller(new Model(daysList, detailedDaysList, location.name), new View());
-        })
-}
-
-setData();

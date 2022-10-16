@@ -21,6 +21,8 @@
   backdrop-filter: blur(5px);
   font-weight: 500;
   padding-top: 5px;
+  z-index: 3;
+  cursor: pointer;
 }
 .selector::after {
   content: "";
@@ -36,7 +38,14 @@
   border-style: solid;
   border-color: transparent #FFFFFF;
   pointer-events: none;
+  transform: rotate(270deg);
+  transition: all 0.3s ease-in-out;
+}
+.selector.active::after {
   transform: rotate(90deg);
+}
+.selector.active > div {
+  display: none;
 }
 .selector__options-list {
   margin-top: 13px;
@@ -44,22 +53,48 @@
   max-width: 440px;
   color: #FFFFFF;
   text-align: center;
-  padding: 10px 35px;
+  padding: 10px 5px;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  display: none;
+  backdrop-filter: blur(20px);
 }
 .selector__option {
-  padding: 10px;
+  padding: 3px;
   font-weight: 400;
   transition: text-decoration 4s ease-in-out;
 }
 .selector__option:hover {
-  text-decoration: underline;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
   cursor: pointer;
+}
+
+.theme {
+  position: absolute;
+  border-radius: 50%;
+  align-self: flex-end;
+  padding: 15px;
+  width: 0px;
+  top: 30px;
+  height: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(20px);
+}
+.theme:hover {
+  cursor: pointer;
+}
+@media (max-width: 430px) {
+  .theme {
+    right: 5px;
+  }
 }
 
 .detailed-day__title {
@@ -118,29 +153,89 @@
   height: 100px;
   z-index: 100;
 }
+@media (max-width: 1400px) {
+  .detailed-day__row {
+    flex-direction: column;
+    flex-wrap: wrap-reverse;
+  }
+  .detailed-day__right {
+    border: none;
+    border-top: 1.5px solid rgba(166, 166, 166, 0.7);
+    margin-top: 20px;
+  }
+}
+@media (max-width: 740px) {
+  .detailed-day {
+    min-width: 100%;
+    padding: 10px;
+  }
+  .detailed-day__title {
+    font-size: 50px;
+  }
+  .detailed-day__icon {
+    max-width: 110px;
+    margin-left: 40px;
+    height: auto;
+  }
+  .detailed-day__temperature {
+    font-size: 40px;
+  }
+  .detailed-day__right {
+    justify-content: center;
+    flex: 1;
+  }
+  .detailed-day__card {
+    flex: 0 0 200px;
+    flex-direction: column;
+    padding: 20px;
+    min-width: 200xp;
+    height: 58px;
+    z-index: 100;
+  }
+}
+@media (max-width: 430px) {
+  .detailed-day__icon {
+    max-width: 80px;
+  }
+  .detailed-day__temperature {
+    font-size: 30px;
+  }
+  .detailed-day__description {
+    font-size: 18px;
+  }
+}
 
 html {
   font-family: "Roboto", sans-serif;
   font-size: 1rem;
   color: #FFFFFF;
+  background-color: rgb(12, 12, 134);
+}
+
+body {
+  background-color: rgb(12, 12, 134);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .main {
   width: 100%;
-  height: 100vh;
-  background: rgb(12, 12, 134) url("https://images.pexels.com/photos/427679/pexels-photo-427679.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1") no-repeat center/cover;
+  min-height: 100vh;
   padding: 20px 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 .main__selectors-row {
+  align-self: center;
   min-height: 40px;
-  width: 60%;
+  width: 80%;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 30px;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-bottom: 15px;
+  gap: 0px 20px;
 }
 .main__message {
   margin: 30px 0px;
@@ -156,7 +251,7 @@ html {
 }
 .main__detailed-day {
   width: 80%;
-  min-height: 65%;
+  min-height: 67%;
   color: #FFFFFF;
   text-align: center;
   padding: 20px 35px;
@@ -171,7 +266,8 @@ html {
   margin-top: 20px;
   display: flex;
   width: 80%;
-  justify-content: space-around;
+  justify-content: flex-start;
+  gap: 20px;
 }
 .main__day {
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -202,6 +298,24 @@ html {
 }
 .main__day-temperature {
   font-size: 25px;
+}
+@media (max-width: 1400px) {
+  .main__days {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+}
+@media (max-width: 740px) {
+  .main__day {
+    width: 100%;
+  }
+}
+@media (max-width: 430px) {
+  .main {
+    padding: 20px;
+  }
 }
 
 /*# sourceMappingURL=style.min.css.map */

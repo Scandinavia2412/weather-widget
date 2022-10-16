@@ -65,4 +65,57 @@
         height: 100px;
         z-index: 100;
     }
+    @media (max-width: 1400px) {
+        &__row {
+            flex-direction: column;
+            flex-wrap: wrap-reverse;
+        }
+        &__right{
+            border: none;
+            border-top: 1.5px solid $centerBoundary;
+            margin-top: 20px;
+        }        
+    }
+
+    @media (max-width: 740px) {
+        & {
+            min-width: 100%;
+            padding: 10px;
+        }
+        &__title {
+            font-size: 50px;
+        }
+        &__icon {
+            max-width: 110px;
+            margin-left: 40px;
+            height: auto;
+        }
+        &__temperature {
+            font-size: 40px;
+        }
+        &__right {
+            justify-content: center;
+            flex: 1;
+        }
+        &__card {
+            flex: 0 0 200px;
+            flex-direction: column;
+            padding: 20px;
+            min-width: 200xp;
+            height: 58px;
+            z-index: 100;
+        }
+    }
+
+    @media (max-width: 430px) {     
+        &__icon {
+            max-width: 80px;
+        }
+        &__temperature {
+            font-size: 30px;
+        }
+        &__description {
+            font-size: 18px;
+        }
+    } 
 }
