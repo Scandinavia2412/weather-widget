@@ -1,5 +1,5 @@
 .detailed-day {
-
+    
     &__title {
         font-size: 90px;
         font-weight: 400;
@@ -27,8 +27,8 @@
 
     &__icon {
         max-width: 230px;
+        max-height: 230px;
         margin-left: 40px;
-        height: auto;
     }
 
     &__main-content {

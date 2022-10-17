@@ -11,6 +11,7 @@ class Model {
     }
 
     detailedWeatherChanged(id) {
+        console.log(id)
         const choosedWeather = this.detailedDaysList.find(item => item.id === +id)
         this.current = choosedWeather;
         this.commitOnWeatherListChanged(this.daysList, this.current, this.location)

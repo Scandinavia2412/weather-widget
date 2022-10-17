@@ -120,8 +120,8 @@
 }
 .detailed-day__icon {
   max-width: 230px;
+  max-height: 230px;
   margin-left: 40px;
-  height: auto;
 }
 .detailed-day__main-content {
   padding-left: 40px;

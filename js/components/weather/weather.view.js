@@ -3,7 +3,7 @@ class View {
         this.app = this.getElement('#root')
         this.app.classList.add('main')
         this.themeWrapper = this.createElement('div', 'main__theme-wrapper', 'theme')
-        this.themeToggler= this.createElement('div', 'fas', 'fa-moon', 'theme-toggler')
+        this.themeToggler = this.createElement('div', 'fas', 'fa-moon', 'theme-toggler')
         this.dayRange = this.createElement('div', 'main__selector', 'selector')
         this.dayRange.textContent = 'Days range'
         this.daySearch = this.createElement('div', 'main__selector', 'selector')
@@ -20,47 +20,50 @@ class View {
         this.description = this.createElement('p', 'detailed-day__description')
         this.mainContent = this.createElement('div', 'detailed-day__main-content')
         this.elementsList = this.createElementsList()
+
         this.themeWrapper.append(this.themeToggler)
-        
         this.rightSide = this.appendElements('detailCard')
-        this.daysRow = this.appendElements('dayCard')
         this.selectorsRow.append(this.dayRange, this.daySearch)
         this.dayRange.append(this.addSelectorOptions(rangeDays))
         this.daySearch.append(this.addSelectorOptions(searchByDayName))
-        this.app.append(this.themeWrapper,this.selectorsRow, this.detailedWeather, this.daysRow)
+        this.app.append(this.themeWrapper, this.selectorsRow, this.detailedWeather, this.daysRow)
         this.onSelectorClick()
         this.handlerThemeToggler()
     }
 
     bindEditDetailedDay(handler) {
+        this.onWeatherDetailedChanged = handler;
+    }
+
+    handlerWeatherDetailed() {
         this.daysRow.addEventListener('click', (e) => {
-            handler(e.target.parentNode.id || e.target.id);
+            this.onWeatherDetailedChanged(e.target.parentNode.id || e.target.id);
         })
     }
 
     bindSelectorClicked(handler) {
-      this.dayRange.addEventListener('click', () => {
-        handler(this.dayRangeValue, this.searchByDayNameValue)
-      })
-      this.daySearch.addEventListener('click', () => {
-        handler(this.dayRangeValue, this.searchByDayNameValue)
-      })
+        this.dayRange.addEventListener('click', () => {
+            handler(this.dayRangeValue, this.searchByDayNameValue)
+        })
+        this.daySearch.addEventListener('click', () => {
+            handler(this.dayRangeValue, this.searchByDayNameValue)
+        })
     }
 
     handlerThemeToggler() {
-        let url;    
+        let url;
 
         let themeToggler = document.querySelector('#theme-toggler')
         window.localStorage.setItem('imageUrl', 'https://wallpapercave.com/wp/wp7041961.jpg')
         document.body.style.backgroundImage = `url(${'https://images.pexels.com/photos/427679/pexels-photo-427679.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'})`;
-        
-        themeToggler.onclick = () => {   
+
+        themeToggler.onclick = () => {
             themeToggler.classList.toggle('fa-moon');
             themeToggler.classList.toggle('fa-sun');
-            
-            if(themeToggler.classList.contains('fa-sun')) {
+
+            if (themeToggler.classList.contains('fa-sun')) {
                 window.localStorage.setItem('imageUrl', 'https://wallpapercave.com/wp/wp7041961.jpg')
-                url = localStorage.getItem('imageUrl')               
+                url = localStorage.getItem('imageUrl')
                 document.body.classList.add('active');
                 document.body.style.backgroundImage = `url(${url})`
             } else {
@@ -73,9 +76,9 @@ class View {
     }
 
     onSelectorClick() {
-        const selectors = document.querySelectorAll('.selector');        
-        [...selectors].map(item => { 
-            item.classList.add('active')        
+        const selectors = document.querySelectorAll('.selector');
+        [...selectors].map(item => {
+            item.classList.add('active')
             item.addEventListener('click', (e) => {
                 item.classList.toggle('active');
                 if (e.target.classList.contains('selector__option')) {
@@ -88,7 +91,7 @@ class View {
                     }
                 }
             })
-        })      
+        })
     }
 
     createElementsList() {
@@ -129,14 +132,14 @@ class View {
                 let { nameOfDay, iconWrapper, temp, wrapper } = item;
                 wrapper.append(nameOfDay, iconWrapper, temp)
                 container.append(wrapper)
-            })           
+            })
             return container;
         }
     }
 
     createElement(tag, className, additionClassName, id) {
         const element = document.createElement(tag);
-        if(id) {
+        if (id) {
             element.id = id;
         }
         if (className && !additionClassName) {
@@ -191,7 +194,7 @@ class View {
 
     setContext(contentList, type) {
         let degreesCelcius = String.fromCodePoint(8451);
-        let { detailedCardElements, daysCardList } = this.elementsList;     
+        let { detailedCardElements, daysCardList } = this.elementsList;
         if (type === 'detailCard') {
             for (let i = 0; i < contentList.length; i++) {
                 let { parametr, parametrDescription } = detailedCardElements[i];
@@ -224,7 +227,7 @@ class View {
             const message = this.createElement('p', 'main__message');
             message.textContent = 'No data available';
             this.app.append(message)
-        } else {            
+        } else {
             this.cityName.textContent = `${location}`
             this.date.textContent = `${current.dayName}  ${this.reverseDate(current.date)}`
             let degreesCelcius = String.fromCodePoint(8451);
@@ -241,6 +244,7 @@ class View {
             this.setActiveMode(current, this.elementsList.daysCardList)
             this.detailedWeather.append(this.cityName, this.date, this.rowContainer)
             this.daysRow = this.appendElements('dayCard', days.length)
+            this.handlerWeatherDetailed()
             let app = document.querySelector('#root')
             app.removeChild(app.lastChild)
             this.app.append(this.daysRow)

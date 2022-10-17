@@ -1,4 +1,5 @@
 class WeatherModelCreator {
+    
      createDayModels(data) {
         let daysList = [];
         let detailedDaysList = [];

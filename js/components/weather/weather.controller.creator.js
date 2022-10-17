@@ -1,8 +1,8 @@
 class WeatherControllerCreator {
     
-    setData(helper, dayNames) {
+    setData(handler, dayNames) {
         let daysList, detailedDaysList;
-        helper()
+        handler()
             .then(data => {
                 let {
                     location,
