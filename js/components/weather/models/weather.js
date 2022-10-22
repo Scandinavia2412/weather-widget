@@ -1,10 +1,10 @@
 class Weather {
     constructor(id, dayName, temperature, description, icon) {
-        this._id = id
-        this._dayName = dayName
-        this._temperature = temperature
-        this._description = description
-        this._icon = icon
+        this._id = id;
+        this._dayName = dayName;
+        this._temperature = temperature;
+        this._description = description;
+        this._icon = icon;
     }
     get id() {
         return this._id;

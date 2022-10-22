@@ -1,34 +1,34 @@
 class View {
     constructor() {
-        this.app = this.getElement('#root')
-        this.app.classList.add('main')
-        this.themeWrapper = this.createElement('div', 'main__theme-wrapper', 'theme')
-        this.themeToggler = this.createElement('div', 'fas', 'fa-moon', 'theme-toggler')
-        this.dayRange = this.createElement('div', 'main__selector', 'selector')
-        this.dayRange.textContent = 'Days range'
-        this.daySearch = this.createElement('div', 'main__selector', 'selector')
-        this.daySearch.textContent = 'Search by day'
-        this.selectorsRow = this.createElement('div', 'main__selectors-row')
-        this.detailedWeather = this.createElement('div', 'main__detailed-day', 'detailed-day')
-        this.cityName = this.createElement('h3', 'detailed-day__title')
-        this.date = this.createElement('p', 'detailed-day__date')
-        this.rowContainer = this.createElement('div', 'detailed-day__row')
-        this.leftSide = this.createElement('div', 'detailed-day__left')
-        this.temperature = this.createElement('p', 'detailed-day__temperature')
-        this.icon = this.createElement('img', 'detailed-day__icon')
-        this.icon.alt = "icon"
-        this.description = this.createElement('p', 'detailed-day__description')
-        this.mainContent = this.createElement('div', 'detailed-day__main-content')
-        this.elementsList = this.createElementsList()
+        this.app = this.getElement('#root');
+        this.app.classList.add('main');
+        this.themeWrapper = this.createElement('div', 'main__theme-wrapper', 'theme');
+        this.themeToggler = this.createElement('div', 'fas', 'fa-moon', 'theme-toggler');
+        this.dayRange = this.createElement('div', 'main__selector', 'selector');
+        this.dayRange.textContent = 'Days range';
+        this.daySearch = this.createElement('div', 'main__selector', 'selector');
+        this.daySearch.textContent = 'Search by day';
+        this.selectorsRow = this.createElement('div', 'main__selectors-row');
+        this.detailedWeather = this.createElement('div', 'main__detailed-day', 'detailed-day');
+        this.cityName = this.createElement('h3', 'detailed-day__title');
+        this.date = this.createElement('p', 'detailed-day__date');
+        this.rowContainer = this.createElement('div', 'detailed-day__row');
+        this.leftSide = this.createElement('div', 'detailed-day__left');
+        this.temperature = this.createElement('p', 'detailed-day__temperature');
+        this.icon = this.createElement('img', 'detailed-day__icon');
+        this.icon.alt = "icon";
+        this.description = this.createElement('p', 'detailed-day__description');
+        this.mainContent = this.createElement('div', 'detailed-day__main-content');
+        this.elementsList = this.createElementsList();
 
-        this.themeWrapper.append(this.themeToggler)
-        this.rightSide = this.appendElements('detailCard')
-        this.selectorsRow.append(this.dayRange, this.daySearch)
-        this.dayRange.append(this.addSelectorOptions(rangeDays))
-        this.daySearch.append(this.addSelectorOptions(searchByDayName))
-        this.app.append(this.themeWrapper, this.selectorsRow, this.detailedWeather, this.daysRow)
-        this.onSelectorClick()
-        this.handlerThemeToggler()
+        this.themeWrapper.append(this.themeToggler);
+        this.rightSide = this.appendElements('detailCard');
+        this.selectorsRow.append(this.dayRange, this.daySearch);
+        this.dayRange.append(this.addSelectorOptions(rangeDays));
+        this.daySearch.append(this.addSelectorOptions(searchByDayName));
+        this.app.append(this.themeWrapper, this.selectorsRow, this.detailedWeather, this.daysRow);
+        this.onSelectorClick();
+        this.handlerThemeToggler();
     }
 
     bindEditDetailedDay(handler) {
@@ -43,10 +43,10 @@ class View {
 
     bindSelectorClicked(handler) {
         this.dayRange.addEventListener('click', () => {
-            handler(this.dayRangeValue, this.searchByDayNameValue)
+            handler(this.dayRangeValue, this.searchByDayNameValue);
         })
         this.daySearch.addEventListener('click', () => {
-            handler(this.dayRangeValue, this.searchByDayNameValue)
+            handler(this.dayRangeValue, this.searchByDayNameValue);
         })
     }
 
@@ -186,7 +186,7 @@ class View {
             data.map(item => {
                 let { id, dayName, icon, temperature } = item;
                 let data = { id, dayName, icon, temperature };
-                contentList.push(data)
+                contentList.push(data);
             })
         }
         return contentList;
@@ -198,8 +198,8 @@ class View {
         if (type === 'detailCard') {
             for (let i = 0; i < contentList.length; i++) {
                 let { parametr, parametrDescription } = detailedCardElements[i];
-                parametr.textContent = Object.keys(contentList[i])
-                parametrDescription.textContent = Object.values(contentList[i])
+                parametr.textContent = Object.keys(contentList[i]);
+                parametrDescription.textContent = Object.values(contentList[i]);
             }
         } else {
             for (let i = 0; i < contentList.length; i++) {
@@ -218,7 +218,7 @@ class View {
         let activeElement = elementsList.find(item => item.wrapper.classList.contains('active'));
         activeElement.wrapper.classList.remove('active');
         let element = elementsList.find(item => +item.wrapper.id === current.id);
-        element.wrapper.classList.add('active')
+        element.wrapper.classList.add('active');
     }
 
     displayWeatherDays(days, current, location) {
@@ -226,28 +226,28 @@ class View {
         if (!days.length && !!current) {
             const message = this.createElement('p', 'main__message');
             message.textContent = 'No data available';
-            this.app.append(message)
+            this.app.append(message);
         } else {
-            this.cityName.textContent = `${location}`
-            this.date.textContent = `${current.dayName}  ${this.reverseDate(current.date)}`
+            this.cityName.textContent = `${location}`;
+            this.date.textContent = `${current.dayName}  ${this.reverseDate(current.date)}`;
             let degreesCelcius = String.fromCodePoint(8451);
-            this.temperature.textContent = `+${Math.round(current.temperature)} ${degreesCelcius}`
-            this.icon.src = `${current.icon}`
-            this.description.textContent = `${current.description}`
-            const detailCardContentList = this.createDataList(current, 'detailedCard')
-            this.setContext(detailCardContentList, 'detailCard')
-            const daysContentList = this.createDataList(days, 'dayCard')
-            this.setContext(daysContentList, 'dayCard')
-            this.mainContent.append(this.temperature, this.description)
-            this.leftSide.append(this.icon, this.mainContent)
-            this.rowContainer.append(this.leftSide, this.rightSide)
-            this.setActiveMode(current, this.elementsList.daysCardList)
-            this.detailedWeather.append(this.cityName, this.date, this.rowContainer)
-            this.daysRow = this.appendElements('dayCard', days.length)
-            this.handlerWeatherDetailed()
-            let app = document.querySelector('#root')
-            app.removeChild(app.lastChild)
-            this.app.append(this.daysRow)
+            this.temperature.textContent = `+${Math.round(current.temperature)} ${degreesCelcius}`;
+            this.icon.src = `${current.icon}`;
+            this.description.textContent = `${current.description}`;
+            const detailCardContentList = this.createDataList(current, 'detailedCard');
+            this.setContext(detailCardContentList, 'detailCard');
+            const daysContentList = this.createDataList(days, 'dayCard');
+            this.setContext(daysContentList, 'dayCard');
+            this.mainContent.append(this.temperature, this.description);
+            this.leftSide.append(this.icon, this.mainContent);
+            this.rowContainer.append(this.leftSide, this.rightSide);
+            this.setActiveMode(current, this.elementsList.daysCardList);
+            this.detailedWeather.append(this.cityName, this.date, this.rowContainer);
+            this.daysRow = this.appendElements('dayCard', days.length);
+            this.handlerWeatherDetailed();
+            let app = document.querySelector('#root');
+            app.removeChild(app.lastChild);
+            this.app.append(this.daysRow);
         }
     }
 }
