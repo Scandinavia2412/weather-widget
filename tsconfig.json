@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "target": "ES2017",
+        "module": "System",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "experimentalDecorators": true,
+        "watch": true,
+        "sourceMap": true,
+        "outFile": "dist/index.js"
+    },
+    "include": ["./**/*"]
+}

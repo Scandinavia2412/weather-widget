@@ -1,10 +1,16 @@
-class WeatherModelCreator {
+import { IWeatherDetailed } from './core/interfaces/weather-detailed.interface';
+import { IWeather } from './core/interfaces/weather.interface';
+import { IWeatherModelCreator } from "./core/interfaces/weather-model-creator.interface";
+import { Weather } from './models/weather';
+import { WeatherDetailed } from './models/weather-detailed';
 
-    createDayModels(data) {
-        let daysList = [];
-        let detailedDaysList = [];
+export default class WeatherModelCreator implements IWeatherModelCreator{
+
+    createDayModels(data: any) {
+        let daysList: IWeather[] = [];
+        let detailedDaysList: IWeatherDetailed[] = [];
         let icon = '';
-        const result = data.map((day, index) => {
+        const result = data.map((day: any, index: number) => {
             let {
                 date,
                 dayName,

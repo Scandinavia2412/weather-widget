@@ -1,5 +1,36 @@
-class View {
-    constructor() {
+import { rangeDays, searchByDayName } from '../../index';
+import { IWeatherDetailed } from './core/interfaces/weather-detailed.interface';
+import { IView } from "./core/interfaces/weather-view.interface";
+import { IWeather } from "./core/interfaces/weather.interface";
+import { ElemetsListType } from './core/types';
+
+export class View {
+    app: HTMLElement;
+    themeWrapper: HTMLElement;
+    themeToggler: HTMLElement;
+    dayRange: HTMLElement;
+    daySearch: HTMLElement;
+    selectorsRow: HTMLElement;
+    detailedWeather: HTMLElement;
+    cityName: HTMLElement;
+    date: HTMLElement;
+    rowContainer: HTMLElement;
+    leftSide: HTMLElement;
+    temperature: HTMLElement;
+    icon: HTMLImageElement;
+    description: HTMLElement;
+    mainContent: HTMLElement;
+    elementsList: ElemetsListType;
+    daysRow: HTMLElement;
+    rightSide: HTMLElement;
+    selectedDaysCount: number;
+    daysCardList: IWeather[];
+    dayRangeValue: number;
+    searchByDayNameValue: string;
+    [index: string]: any;
+    onWeatherDetailedChanged: (id: number | string) => void;
+
+        constructor() {
         this.app = this.getElement('#root');
         this.app.classList.add('main');
         this.themeWrapper = this.createElement('div', 'main__theme-wrapper', 'theme');
@@ -15,7 +46,7 @@ class View {
         this.rowContainer = this.createElement('div', 'detailed-day__row');
         this.leftSide = this.createElement('div', 'detailed-day__left');
         this.temperature = this.createElement('p', 'detailed-day__temperature');
-        this.icon = this.createElement('img', 'detailed-day__icon');
+        this.icon = this.createElement('img', 'detailed-day__icon') as HTMLImageElement;
         this.icon.alt = "icon";
         this.description = this.createElement('p', 'detailed-day__description');
         this.mainContent = this.createElement('div', 'detailed-day__main-content');
@@ -31,17 +62,12 @@ class View {
         this.handlerThemeToggler();
     }
 
-    bindEditDetailedDay(handler) {
+    bindEditDetailedDay(handler: (id: number | string) => void) {
         this.onWeatherDetailedChanged = handler;
     }
 
-    handlerWeatherDetailed() {
-        this.daysRow.addEventListener('click', (e) => {
-            this.onWeatherDetailedChanged(e.target.parentNode.id || e.target.id);
-        })
-    }
-
-    bindSelectorClicked(handler) {
+    
+    bindSelectorClicked(handler: (arg0: number, arg1: string) => void) {
         this.dayRange.addEventListener('click', () => {
             handler(this.dayRangeValue, this.searchByDayNameValue);
         })
@@ -53,10 +79,10 @@ class View {
     handlerThemeToggler() {
         let url;
 
-        let themeToggler = document.querySelector('#theme-toggler')
+        let themeToggler = document.querySelector('#theme-toggler') as HTMLElement;
         window.localStorage.setItem('imageUrl', 'https://wallpapercave.com/wp/wp7041961.jpg')
         document.body.style.backgroundImage = `url(${'https://images.pexels.com/photos/427679/pexels-photo-427679.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'})`;
-
+        
         themeToggler.onclick = () => {
             themeToggler.classList.toggle('fa-moon');
             themeToggler.classList.toggle('fa-sun');
@@ -74,15 +100,15 @@ class View {
             }
         }
     }
-
+    
     onSelectorClick() {
         const selectors = document.querySelectorAll('.selector');
         [...selectors].map(item => {
             item.classList.add('active')
             item.addEventListener('click', (e) => {
                 item.classList.toggle('active');
-                if (e.target.classList.contains('selector__option')) {
-                    const optionContent = e.target.textContent;
+                if ((e.target as HTMLElement).classList.contains('selector__option')) {
+                    const optionContent = (e.target as HTMLElement).textContent;
                     if (+optionContent[0]) {
                         this.dayRangeValue = +optionContent[0];
                     }
@@ -94,6 +120,13 @@ class View {
         })
     }
 
+    handlerWeatherDetailed() {
+        this.daysRow.addEventListener('click', (e) => {                      
+            this.onWeatherDetailedChanged(( <HTMLElement>e.target ).parentElement.id || (e.target as HTMLElement).id);
+
+        })
+    }
+
     createElementsList() {
         let detailedCardElements = []
         let daysCardList = []
@@ -101,7 +134,10 @@ class View {
             this[`parametr${i}`] = this.createElement('p', 'detailed-day__card-content')
             this[`parametrDescription${i}`] = this.createElement('p', 'detailed-day__card-content')
             this[`detailedCard${i}`] = this.createElement('div', 'detailed-day__card')
-            detailedCardElements.push({ parametr: this[`parametr${i}`], parametrDescription: this[`parametrDescription${i}`], detailedCard: this[`detailedCard${i}`] })
+            detailedCardElements.push({ 
+                parametr: this[`parametr${i}`],
+                 parametrDescription: this[`parametrDescription${i}`],
+                  detailedCard: this[`detailedCard${i}`] })
         }
         for (let i = 1; i < 8; i++) {
             this[`nameOfDay${i}`] = this.createElement('div', 'main__day-name')
@@ -109,14 +145,18 @@ class View {
             this[`temp${i}`] = this.createElement('div', 'main__day-temperature')
             this[`wrapper${i}`] = this.createElement('div', 'main__day')
             i === 1 ? this[`wrapper${i}`].classList.add('active') : null
-            daysCardList.push({ nameOfDay: this[`nameOfDay${i}`], iconWrapper: this[`iconWrapper${i}`], temp: this[`temp${i}`], wrapper: this[`wrapper${i}`] })
+            daysCardList.push({ 
+                nameOfDay: this[`nameOfDay${i}`],
+                 iconWrapper: this[`iconWrapper${i}`], 
+                 temp: this[`temp${i}`],
+                 wrapper: this[`wrapper${i}`] })
         }
         return { detailedCardElements, daysCardList }
     }
 
-    appendElements(type, selectedDaysCount) {
+    appendElements(type: string, selectedDaysCount?: number) {
         let { detailedCardElements, daysCardList } = this.elementsList;
-        let container;
+        let container: HTMLElement;
         if (type === 'detailCard') {
             container = this.createElement('div', 'detailed-day__right')
             detailedCardElements.map(item => {
@@ -137,7 +177,7 @@ class View {
         }
     }
 
-    createElement(tag, className, additionClassName, id) {
+    createElement(tag: string, className?:string, additionClassName?: string, id?: string) {
         const element = document.createElement(tag);
         if (id) {
             element.id = id;
@@ -151,17 +191,17 @@ class View {
         return element;
     }
 
-    getElement(selector) {
+    getElement(selector: string): HTMLElement {
         return document.querySelector(selector);
     }
 
-    reverseDate(date) {
+    reverseDate(date: string): string {
         return date.split('-').reverse().join('/');
     }
 
-    addSelectorOptions(contentList) {
+    addSelectorOptions(contentList: any): HTMLElement{
         let optionsList = this.createElement('div', 'selector__options-list');
-        contentList.map(text => {
+        contentList.map((text: any) => {
             let option = this.createElement('div', 'selector__option');
             option.textContent = `${text}`;
             optionsList.append(option);
@@ -169,8 +209,8 @@ class View {
         return optionsList;
     }
 
-    createDataList(data, typeOfList) {
-        let contentList = [];
+    createDataList(data: any, typeOfList: string) {
+        let contentList: any = [] ;
         let degreesCelcius = String.fromCodePoint(8451);
         if (typeOfList === 'detailedCard') {
             let { humidity, temperatureF, temperature, wind, sunset, sunrise } = data
@@ -183,27 +223,33 @@ class View {
                 { Sunrise: sunrise }
             ]
         } else {
-            data.map(item => {
+            data.map((item: { id: number; dayName:string; icon: string; temperature: number; }) => {
                 let { id, dayName, icon, temperature } = item;
                 let data = { id, dayName, icon, temperature };
                 contentList.push(data);
             })
         }
+        console.log("qwewewewewe",contentList)
         return contentList;
     }
 
-    setContext(contentList, type) {
+    setContext(contentList: any[], type: string) {
         let degreesCelcius = String.fromCodePoint(8451);
         let { detailedCardElements, daysCardList } = this.elementsList;
+        console.log("contentList",contentList)
         if (type === 'detailCard') {
+            console.log('detailedCArd')
+
             for (let i = 0; i < contentList.length; i++) {
                 let { parametr, parametrDescription } = detailedCardElements[i];
-                parametr.textContent = Object.keys(contentList[i]);
-                parametrDescription.textContent = Object.values(contentList[i]);
+                parametr.textContent = `${Object.keys(contentList[i])}`;
+                parametrDescription.textContent = `${Object.values(contentList[i])}`;
             }
         } else {
-            for (let i = 0; i < contentList.length; i++) {
+            for (let i = 0; i < contentList?.length; i++) {
                 let { nameOfDay, iconWrapper, temp, wrapper } = daysCardList[i];
+                console.log('daysCard')
+                console.log(daysCardList[i])
                 let { id, dayName, icon, temperature } = contentList[i];
                 wrapper.id = id;
                 nameOfDay.textContent = dayName;
@@ -214,29 +260,30 @@ class View {
         }
     }
 
-    setActiveMode(current, elementsList) {
-        let activeElement = elementsList.find(item => item.wrapper.classList.contains('active'));
-        activeElement.wrapper.classList.remove('active');
-        let element = elementsList.find(item => +item.wrapper.id === current.id);
-        element.wrapper.classList.add('active');
+    setActiveMode(current: IWeatherDetailed, elementsList: any) {
+        let activeElement = elementsList.find((item:any) => item.wrapper.classList.contains('active'));
+        activeElement?.wrapper?.classList.remove('active');
+        let element = elementsList?.find((item: { wrapper: { id: string | number; }; }) => +item.wrapper.id === current.id);
+        element?.wrapper?.classList.add('active');
     }
 
-    displayWeatherDays(days, current, location) {
+    displayWeatherDays(days: IWeather[], current: IWeatherDetailed, location: string) {   
         this.selectedDaysCount = days.length;
         if (!days.length && !!current) {
             const message = this.createElement('p', 'main__message');
             message.textContent = 'No data available';
             this.app.append(message);
-        } else {
+        } else {          
             this.cityName.textContent = `${location}`;
-            this.date.textContent = `${current.dayName}  ${this.reverseDate(current.date)}`;
+            this.date.textContent = `${current?.dayName}  ${this.reverseDate(current?.date)}`;
             let degreesCelcius = String.fromCodePoint(8451);
             this.temperature.textContent = `+${Math.round(current.temperature)} ${degreesCelcius}`;
             this.icon.src = `${current.icon}`;
             this.description.textContent = `${current.description}`;
-            const detailCardContentList = this.createDataList(current, 'detailedCard');
+            const detailCardContentList = this.createDataList(current, 'detailedCard');         
             this.setContext(detailCardContentList, 'detailCard');
             const daysContentList = this.createDataList(days, 'dayCard');
+            console.log('heyyyyyyyyyyyyyyyyy', daysContentList)
             this.setContext(daysContentList, 'dayCard');
             this.mainContent.append(this.temperature, this.description);
             this.leftSide.append(this.icon, this.mainContent);

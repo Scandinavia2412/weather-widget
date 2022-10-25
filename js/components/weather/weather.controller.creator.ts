@@ -1,6 +1,12 @@
-class WeatherControllerCreator {
+import { IWeatherControllerCreator } from './core/interfaces/weather-controller-creator.interface';
+import { Controller } from './weather.controller';
+import Model from './weather.model';
+import WeatherModelCreator from './weather.model.creator';
+import { View } from './weather.view';
 
-    setData(days, dayNames) {
+export default class WeatherControllerCreator implements IWeatherControllerCreator {
+
+    setData(days: any, dayNames: string[]) {
         let daysList, detailedDaysList;
         let {
             location,
