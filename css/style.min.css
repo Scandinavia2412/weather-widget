@@ -80,8 +80,10 @@
   top: 30px;
   height: 0px;
   display: flex;
-  align-items: center;
+  flex-direction: row;
   justify-content: center;
+  align-items: center;
+  flex-wrap: no-wrap;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: rgba(255, 255, 255, 0.5);
   border-radius: 16px;
@@ -116,7 +118,10 @@
 .detailed-day__left {
   flex: 1;
   display: flex;
+  flex-direction: row;
+  justify-content: center;
   align-items: start;
+  flex-wrap: no-wrap;
 }
 .detailed-day__icon {
   max-width: 230px;
@@ -125,9 +130,12 @@
 }
 .detailed-day__main-content {
   padding-left: 40px;
+  text-align: start;
   display: flex;
   flex-direction: column;
-  text-align: start;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: no-wrap;
 }
 .detailed-day__temperature {
   font-size: 80px;
@@ -138,16 +146,21 @@
 }
 .detailed-day__right {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
   justify-content: start;
-  flex: 1;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
+  flex: 1;
   border-left: 1.5px solid rgba(166, 166, 166, 0.7);
 }
 .detailed-day__card {
-  display: flex;
   flex: 0 0 200px;
+  display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: no-wrap;
   padding: 20px;
   min-width: 200xp;
   height: 100px;
@@ -155,7 +168,10 @@
 }
 @media (max-width: 1400px) {
   .detailed-day__row {
+    display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     flex-wrap: wrap-reverse;
   }
   .detailed-day__right {
@@ -186,7 +202,11 @@
   }
   .detailed-day__card {
     flex: 0 0 200px;
+    display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: no-wrap;
     padding: 20px;
     min-width: 200xp;
     height: 58px;
@@ -225,16 +245,20 @@ body {
   padding: 20px 50px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+  flex-wrap: no-wrap;
 }
 .main__selectors-row {
   align-self: center;
   min-height: 40px;
   width: 80%;
   display: flex;
+  flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  margin-bottom: 30px;
+  flex-wrap: no-wrap;
+  margin-bottom: 50px;
   gap: 0px 20px;
 }
 .main__message {
@@ -263,10 +287,13 @@ body {
   margin: 0 auto;
 }
 .main__days {
-  margin-top: 50px;
+  margin-top: 70px;
   display: flex;
-  width: 80%;
+  flex-direction: row;
   justify-content: flex-start;
+  align-items: center;
+  flex-wrap: no-wrap;
+  width: 80%;
   gap: 20px;
 }
 .main__day {
@@ -301,9 +328,11 @@ body {
 }
 @media (max-width: 1400px) {
   .main__days {
-    flex-wrap: wrap;
-    align-items: center;
+    display: flex;
+    flex-direction: row;
     justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 10px;
   }
 }

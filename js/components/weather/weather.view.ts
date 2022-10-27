@@ -1,8 +1,7 @@
 import { rangeDays, searchByDayName } from '../../index';
 import { IWeatherDetailed } from './core/interfaces/weather-detailed.interface';
-import { IView } from "./core/interfaces/weather-view.interface";
 import { IWeather } from "./core/interfaces/weather.interface";
-import { ElemetsListType } from './core/types';
+import { ElementsList } from './core/types';
 
 export class View {
     app: HTMLElement;
@@ -20,7 +19,7 @@ export class View {
     icon: HTMLImageElement;
     description: HTMLElement;
     mainContent: HTMLElement;
-    elementsList: ElemetsListType;
+    elementsList: ElementsList;
     daysRow: HTMLElement;
     rightSide: HTMLElement;
     selectedDaysCount: number;
@@ -67,7 +66,7 @@ export class View {
     }
 
     
-    bindSelectorClicked(handler: (arg0: number, arg1: string) => void) {
+    bindSelectorClicked(handler: (dayRangeValue: number, searchByDayNameValue: string) => void) {
         this.dayRange.addEventListener('click', () => {
             handler(this.dayRangeValue, this.searchByDayNameValue);
         })
@@ -79,7 +78,7 @@ export class View {
     handlerThemeToggler() {
         let url;
 
-        let themeToggler = document.querySelector('#theme-toggler') as HTMLElement;
+        let themeToggler = document.querySelector('#theme-toggler')! as HTMLElement;
         window.localStorage.setItem('imageUrl', 'https://wallpapercave.com/wp/wp7041961.jpg')
         document.body.style.backgroundImage = `url(${'https://images.pexels.com/photos/427679/pexels-photo-427679.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'})`;
         
@@ -229,16 +228,13 @@ export class View {
                 contentList.push(data);
             })
         }
-        console.log("qwewewewewe",contentList)
         return contentList;
     }
 
     setContext(contentList: any[], type: string) {
         let degreesCelcius = String.fromCodePoint(8451);
         let { detailedCardElements, daysCardList } = this.elementsList;
-        console.log("contentList",contentList)
         if (type === 'detailCard') {
-            console.log('detailedCArd')
 
             for (let i = 0; i < contentList.length; i++) {
                 let { parametr, parametrDescription } = detailedCardElements[i];
@@ -248,8 +244,6 @@ export class View {
         } else {
             for (let i = 0; i < contentList?.length; i++) {
                 let { nameOfDay, iconWrapper, temp, wrapper } = daysCardList[i];
-                console.log('daysCard')
-                console.log(daysCardList[i])
                 let { id, dayName, icon, temperature } = contentList[i];
                 wrapper.id = id;
                 nameOfDay.textContent = dayName;
@@ -283,7 +277,6 @@ export class View {
             const detailCardContentList = this.createDataList(current, 'detailedCard');         
             this.setContext(detailCardContentList, 'detailCard');
             const daysContentList = this.createDataList(days, 'dayCard');
-            console.log('heyyyyyyyyyyyyyyyyy', daysContentList)
             this.setContext(daysContentList, 'dayCard');
             this.mainContent.append(this.temperature, this.description);
             this.leftSide.append(this.icon, this.mainContent);

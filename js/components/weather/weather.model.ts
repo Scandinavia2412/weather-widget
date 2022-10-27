@@ -1,9 +1,8 @@
-import { IOnWeatherListChanged } from './core/interfaces/on-weather-list-changed.interface';
+import { IDayChangeHandler } from './core/interfaces/on-weather-list-changed.interface';
 import { IWeatherDetailed } from './core/interfaces/weather-detailed.interface';
 import { IWeather } from './core/interfaces/weather.interface';
-import { IModel } from './core/interfaces/weather.model.interface';
 
-export default class Model implements IModel{
+export default class Model {
 
     daysList: IWeather[];
     detailedDaysList: IWeatherDetailed[];
@@ -12,7 +11,7 @@ export default class Model implements IModel{
     daysByRange: IWeather[];
     daysBySearch: IWeatherDetailed;
 
-    onWeatherListChanged: IOnWeatherListChanged;
+    onWeatherListChanged:  IDayChangeHandler;
 
     constructor(daysList: IWeather[], detailedDaysList: IWeatherDetailed[], location: string) {
         this.daysList = daysList;
@@ -22,7 +21,7 @@ export default class Model implements IModel{
      
     }
 
-    bindWeatherListChanged(callback:IOnWeatherListChanged){
+    bindWeatherListChanged(callback: IDayChangeHandler){
         this.onWeatherListChanged = callback;
     }
 

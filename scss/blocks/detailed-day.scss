@@ -20,9 +20,8 @@
     }
 
     &__left {
-        flex: 1;
-        display: flex;
-        align-items: start;
+        flex: 1;   
+        @include flex-block(row, center, start);
     }
 
     &__icon {
@@ -33,9 +32,8 @@
 
     &__main-content {
         padding-left: 40px;
-        display: flex;
-        flex-direction: column;
         text-align: start;
+        @include flex-block(column);
     }
 
     &__temperature {
@@ -47,19 +45,16 @@
         font-weight: 500;
     }
 
-    &__right {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: start;
-        flex: 1;
+    &__right {  
+        @include flex-block(row, start, center, wrap);
         gap: 10px;
+        flex: 1;
         border-left: 1.5px solid $centerBoundary;
     }
 
     &__card {
-        display: flex;
         flex: 0 0 200px;
-        flex-direction: column;
+        @include flex-block(column);
         padding: 20px;
         min-width: 200xp;
         height: 100px;
@@ -67,8 +62,7 @@
     }
     @media (max-width: 1400px) {
         &__row {
-            flex-direction: column;
-            flex-wrap: wrap-reverse;
+            @include flex-block(column, center, center, wrap-reverse);
         }
         &__right{
             border: none;
@@ -99,7 +93,7 @@
         }
         &__card {
             flex: 0 0 200px;
-            flex-direction: column;
+            @include flex-block(column);
             padding: 20px;
             min-width: 200xp;
             height: 58px;

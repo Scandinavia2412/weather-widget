@@ -34,62 +34,16 @@ System.register("components/weather/core/interfaces/weather.interface", [], func
         }
     };
 });
-System.register("components/weather/core/types", [], function (exports_5, context_5) {
-    "use strict";
-    var __moduleName = context_5 && context_5.id;
-    return {
-        setters: [],
-        execute: function () {
-        }
-    };
-});
-System.register("components/weather/core/interfaces/weather-view.interface", [], function (exports_6, context_6) {
-    "use strict";
-    var __moduleName = context_6 && context_6.id;
-    return {
-        setters: [],
-        execute: function () {
-        }
-    };
-});
-System.register("components/weather/core/interfaces/on-weather-list-changed.interface", [], function (exports_7, context_7) {
-    "use strict";
-    var __moduleName = context_7 && context_7.id;
-    return {
-        setters: [],
-        execute: function () {
-        }
-    };
-});
-System.register("components/weather/core/interfaces/weather.model.interface", [], function (exports_8, context_8) {
-    "use strict";
-    var __moduleName = context_8 && context_8.id;
-    return {
-        setters: [],
-        execute: function () {
-        }
-    };
-});
-System.register("components/weather/core/interfaces/controller.interface", [], function (exports_9, context_9) {
-    "use strict";
-    var __moduleName = context_9 && context_9.id;
-    return {
-        setters: [],
-        execute: function () {
-        }
-    };
-});
-System.register("components/weather/weather.controller", [], function (exports_10, context_10) {
+System.register("components/weather/weather.controller", [], function (exports_5, context_5) {
     "use strict";
     var Controller;
-    var __moduleName = context_10 && context_10.id;
+    var __moduleName = context_5 && context_5.id;
     return {
         setters: [],
         execute: function () {
             Controller = class Controller {
                 constructor(model, view) {
                     this.onWeatherChangedList = (days, current, location) => {
-                        console.log(this.model, this.view);
                         this.view.displayWeatherDays(days, current, location);
                     };
                     this.handleDayClicked = (id) => {
@@ -106,14 +60,23 @@ System.register("components/weather/weather.controller", [], function (exports_1
                     this.view.bindSelectorClicked(this.handleSelectorClicked);
                 }
             };
-            exports_10("Controller", Controller);
+            exports_5("Controller", Controller);
         }
     };
 });
-System.register("components/weather/weather.model", [], function (exports_11, context_11) {
+System.register("components/weather/core/interfaces/on-weather-list-changed.interface", [], function (exports_6, context_6) {
+    "use strict";
+    var __moduleName = context_6 && context_6.id;
+    return {
+        setters: [],
+        execute: function () {
+        }
+    };
+});
+System.register("components/weather/weather.model", [], function (exports_7, context_7) {
     "use strict";
     var Model;
-    var __moduleName = context_11 && context_11.id;
+    var __moduleName = context_7 && context_7.id;
     return {
         setters: [],
         execute: function () {
@@ -147,23 +110,14 @@ System.register("components/weather/weather.model", [], function (exports_11, co
                     this.commitOnWeatherListChanged(this.daysByRange, this.daysBySearch, this.location);
                 }
             };
-            exports_11("default", Model);
+            exports_7("default", Model);
         }
     };
 });
-System.register("components/weather/core/interfaces/weather-model-creator.interface", [], function (exports_12, context_12) {
-    "use strict";
-    var __moduleName = context_12 && context_12.id;
-    return {
-        setters: [],
-        execute: function () {
-        }
-    };
-});
-System.register("components/weather/models/weather", [], function (exports_13, context_13) {
+System.register("components/weather/models/weather", [], function (exports_8, context_8) {
     "use strict";
     var Weather;
-    var __moduleName = context_13 && context_13.id;
+    var __moduleName = context_8 && context_8.id;
     return {
         setters: [],
         execute: function () {
@@ -196,14 +150,14 @@ System.register("components/weather/models/weather", [], function (exports_13, c
                 }
                 ;
             };
-            exports_13("Weather", Weather);
+            exports_8("Weather", Weather);
         }
     };
 });
-System.register("components/weather/models/weather-detailed", ["components/weather/models/weather"], function (exports_14, context_14) {
+System.register("components/weather/models/weather-detailed", ["components/weather/models/weather"], function (exports_9, context_9) {
     "use strict";
     var weather_1, WeatherDetailed;
-    var __moduleName = context_14 && context_14.id;
+    var __moduleName = context_9 && context_9.id;
     return {
         setters: [
             function (weather_1_1) {
@@ -251,14 +205,14 @@ System.register("components/weather/models/weather-detailed", ["components/weath
                 }
                 ;
             };
-            exports_14("WeatherDetailed", WeatherDetailed);
+            exports_9("WeatherDetailed", WeatherDetailed);
         }
     };
 });
-System.register("components/weather/weather.model.creator", ["components/weather/models/weather", "components/weather/models/weather-detailed"], function (exports_15, context_15) {
+System.register("components/weather/weather.model.creator", ["components/weather/models/weather", "components/weather/models/weather-detailed"], function (exports_10, context_10) {
     "use strict";
     var weather_2, weather_detailed_1, WeatherModelCreator;
-    var __moduleName = context_15 && context_15.id;
+    var __moduleName = context_10 && context_10.id;
     return {
         setters: [
             function (weather_2_1) {
@@ -295,14 +249,23 @@ System.register("components/weather/weather.model.creator", ["components/weather
                     return result;
                 }
             };
-            exports_15("default", WeatherModelCreator);
+            exports_10("default", WeatherModelCreator);
         }
     };
 });
-System.register("components/weather/weather.view", ["index"], function (exports_16, context_16) {
+System.register("components/weather/core/types", [], function (exports_11, context_11) {
+    "use strict";
+    var __moduleName = context_11 && context_11.id;
+    return {
+        setters: [],
+        execute: function () {
+        }
+    };
+});
+System.register("components/weather/weather.view", ["index"], function (exports_12, context_12) {
     "use strict";
     var index_1, View;
-    var __moduleName = context_16 && context_16.id;
+    var __moduleName = context_12 && context_12.id;
     return {
         setters: [
             function (index_1_1) {
@@ -497,15 +460,12 @@ System.register("components/weather/weather.view", ["index"], function (exports_
                             contentList.push(data);
                         });
                     }
-                    console.log("qwewewewewe", contentList);
                     return contentList;
                 }
                 setContext(contentList, type) {
                     let degreesCelcius = String.fromCodePoint(8451);
                     let { detailedCardElements, daysCardList } = this.elementsList;
-                    console.log("contentList", contentList);
                     if (type === 'detailCard') {
-                        console.log('detailedCArd');
                         for (let i = 0; i < contentList.length; i++) {
                             let { parametr, parametrDescription } = detailedCardElements[i];
                             parametr.textContent = `${Object.keys(contentList[i])}`;
@@ -515,8 +475,6 @@ System.register("components/weather/weather.view", ["index"], function (exports_
                     else {
                         for (let i = 0; i < (contentList === null || contentList === void 0 ? void 0 : contentList.length); i++) {
                             let { nameOfDay, iconWrapper, temp, wrapper } = daysCardList[i];
-                            console.log('daysCard');
-                            console.log(daysCardList[i]);
                             let { id, dayName, icon, temperature } = contentList[i];
                             wrapper.id = id;
                             nameOfDay.textContent = dayName;
@@ -550,7 +508,6 @@ System.register("components/weather/weather.view", ["index"], function (exports_
                         const detailCardContentList = this.createDataList(current, 'detailedCard');
                         this.setContext(detailCardContentList, 'detailCard');
                         const daysContentList = this.createDataList(days, 'dayCard');
-                        console.log('heyyyyyyyyyyyyyyyyy', daysContentList);
                         this.setContext(daysContentList, 'dayCard');
                         this.mainContent.append(this.temperature, this.description);
                         this.leftSide.append(this.icon, this.mainContent);
@@ -565,14 +522,14 @@ System.register("components/weather/weather.view", ["index"], function (exports_
                     }
                 }
             };
-            exports_16("View", View);
+            exports_12("View", View);
         }
     };
 });
-System.register("components/weather/weather.controller.creator", ["components/weather/weather.controller", "components/weather/weather.model", "components/weather/weather.model.creator", "components/weather/weather.view"], function (exports_17, context_17) {
+System.register("components/weather/weather.controller.creator", ["components/weather/weather.controller", "components/weather/weather.model", "components/weather/weather.model.creator", "components/weather/weather.view"], function (exports_13, context_13) {
     "use strict";
     var weather_controller_1, weather_model_1, weather_model_creator_1, weather_view_1, WeatherControllerCreator;
-    var __moduleName = context_17 && context_17.id;
+    var __moduleName = context_13 && context_13.id;
     return {
         setters: [
             function (weather_controller_1_1) {
@@ -603,14 +560,14 @@ System.register("components/weather/weather.controller.creator", ["components/we
                     new weather_controller_1.Controller(new weather_model_1.default(daysList, detailedDaysList, location.name), new weather_view_1.View());
                 }
             };
-            exports_17("default", WeatherControllerCreator);
+            exports_13("default", WeatherControllerCreator);
         }
     };
 });
-System.register("components/weather/weather.service", [], function (exports_18, context_18) {
+System.register("components/weather/weather.service", [], function (exports_14, context_14) {
     "use strict";
     var WeatherService;
-    var __moduleName = context_18 && context_18.id;
+    var __moduleName = context_14 && context_14.id;
     return {
         setters: [],
         execute: function () {
@@ -622,14 +579,14 @@ System.register("components/weather/weather.service", [], function (exports_18, 
                         .catch(err => console.log(`Error: ${err}`));
                 }
             };
-            exports_18("default", WeatherService);
+            exports_14("default", WeatherService);
         }
     };
 });
-System.register("index", ["components/weather/weather.controller.creator", "components/weather/weather.service"], function (exports_19, context_19) {
+System.register("index", ["components/weather/weather.controller.creator", "components/weather/weather.service"], function (exports_15, context_15) {
     "use strict";
     var weather_controller_creator_1, weather_service_1, rangeDays, searchByDayName, dayNames, weatherService;
-    var __moduleName = context_19 && context_19.id;
+    var __moduleName = context_15 && context_15.id;
     return {
         setters: [
             function (weather_controller_creator_1_1) {
@@ -640,9 +597,9 @@ System.register("index", ["components/weather/weather.controller.creator", "comp
             }
         ],
         execute: function () {
-            exports_19("rangeDays", rangeDays = ['2 days', '4 days', '6 days', '7 days']);
-            exports_19("searchByDayName", searchByDayName = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']);
-            exports_19("dayNames", dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']);
+            exports_15("rangeDays", rangeDays = ['2 days', '4 days', '6 days', '7 days']);
+            exports_15("searchByDayName", searchByDayName = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']);
+            exports_15("dayNames", dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']);
             weatherService = new weather_service_1.default();
             weatherService.getData()
                 .then((days) => {
@@ -653,6 +610,15 @@ System.register("index", ["components/weather/weather.controller.creator", "comp
                     console.log('Server not working!!!');
                 }
             });
+        }
+    };
+});
+System.register("components/weather/core/interfaces/controller.interface", [], function (exports_16, context_16) {
+    "use strict";
+    var __moduleName = context_16 && context_16.id;
+    return {
+        setters: [],
+        execute: function () {
         }
     };
 });

@@ -1,10 +1,9 @@
 import { IWeatherDetailed } from './core/interfaces/weather-detailed.interface';
 import { IWeather } from './core/interfaces/weather.interface';
-import { IWeatherModelCreator } from "./core/interfaces/weather-model-creator.interface";
 import { Weather } from './models/weather';
 import { WeatherDetailed } from './models/weather-detailed';
 
-export default class WeatherModelCreator implements IWeatherModelCreator{
+export default class WeatherModelCreator {
 
     createDayModels(data: any) {
         let daysList: IWeather[] = [];

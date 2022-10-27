@@ -19,17 +19,13 @@ body {
   width: 100%;
   min-height: 100vh;
   padding: 20px 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include flex-block(column);
 
   &__selectors-row {
     align-self: center;
     min-height: 40px;
     width: 80%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
+    @include flex-block(row, flex-end, flex-end);
     margin-bottom: 50px;
     gap: 0px 20px;
   }
@@ -63,9 +59,8 @@ body {
 
   &__days {
     margin-top: 70px;
-    display: flex;
+    @include flex-block(row, flex-start);
     width: 80%;
-    justify-content: flex-start;
     gap: 20px;
   }
 
@@ -107,9 +102,7 @@ body {
 
   @media (max-width: 1400px) {
     &__days {
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: flex-start;
+      @include flex-block(row, flex-start, center, wrap);
       gap: 10px;
     }
   }
